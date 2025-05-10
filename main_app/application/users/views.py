@@ -76,3 +76,5 @@ def get(request: Request):
     }
 
     return Response(user, 200)
+
+# Редактирование пользователя

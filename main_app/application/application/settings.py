@@ -33,11 +33,14 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "django_minio_backend",
+    # "django_minio_backend.apps.DjangoMinioBackendConfig",
 
     "ping",
     "users",
     "classrooms",
     "homeworks",
+    "tasks"
 ]
 
 MIDDLEWARE = [
@@ -112,6 +115,27 @@ CACHES = {
     }
 }
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django_minio_backend.models.MinioBackend",
+    },
+    "staticfiles": {
+        "BACKEND": "django_minio_backend.backends.MinioBackend",
+        "BUCKET": "auto-generated-bucket-static-files",
+    },
+}
+
+MINIO_ENDPOINT = f"{getenv("MINIO_HOST")}:{getenv("MINIO_PORT")}"
+MINIO_ACCESS_KEY = getenv("MINIO_ROOT_USER")
+MINIO_SECRET_KEY = getenv("MINIO_ROOT_PASSWORD")
+MINIO_USE_HTTPS = False
+MINIO_CONSISTENCY_CHECK_ON_START = not DEBUG
+MINIO_PRIVATE_BUCKETS = []
+MINIO_PUBLIC_BUCKETS = [
+    'solutions',
+]
+
+MINIO_MEDIA_FILES_BUCKET = 'solutions'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

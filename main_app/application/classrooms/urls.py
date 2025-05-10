@@ -9,6 +9,5 @@ urlpatterns = [
     path("<uuid:cid>/exit/", views.exit_classroom, name="exit_classroom"),
     path("<uuid:cid>/edit/", views.edit_classroom, name="edit_classroom"),
     path("<uuid:cid>/invite-link/", views.invite_link, name="invite_link"),
-    path("<uuid:cid>/homeworks/", include("homeworks.urls")),
 ]
 

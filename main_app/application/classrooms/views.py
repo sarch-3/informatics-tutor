@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from application.utils import is_teacher
 
-from .serializers import ClassroomSerializer, RecipientSerializer, InviteCodeSerializer, PaginationSerializer
-from homeworks.serializers import HomeworkSerializer
+from .serializers import RecipientSerializer, InviteCodeSerializer, PaginationSerializer, ClassroomSerializer, HomeworkSerializer
 from .utils import correct_classroom
 from django.core.cache import cache
 from .models import Classroom
@@ -137,8 +136,11 @@ def get_classroom(request: Request, cid: UUID):
 
     homeworks = classroom.homeworks.all().order_by("-active_from")
     serializer = HomeworkSerializer(homeworks, many=True)
-    return Response(serializer.data, status=200)
+
+    X_Total_Count = homeworks.count()
+
+    return Response(serializer.data, status=200, headers={"X-Total-Count": X_Total_Count})
+
 
 
 # Редактирование класса???
-# Получение опред класса

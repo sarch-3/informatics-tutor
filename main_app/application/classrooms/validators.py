@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
 
-def tests_validator(value):
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+def tests_answers_validator(value):
     if not isinstance(value, list):
         raise ValidationError('Must be an array of arrays.')
     if len(value) == 0:
@@ -11,11 +13,7 @@ def tests_validator(value):
         raise ValidationError('Nested arrays may not be blank.')
     if not all(isinstance(obj2, str) for obj in value for obj2 in obj):
         raise ValidationError('Nested arrays should only consist of strings.')
-
-def answer_validator(value):
-    if not isinstance(value, list):
-        raise ValidationError('Must be an array of strings.')
-    if len(value) == 0:
-        raise ValidationError('This field may not be blank.')
-    if not all(isinstance(obj, str) for obj in value):
-        raise ValidationError('Must be an array of strings.')
+    
+def file_validator(value: InMemoryUploadedFile):
+    if value.name.lower().split(".")[-1] != "py":
+        raise ValidationError('Must be in .py format.')
