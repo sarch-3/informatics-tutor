@@ -5,7 +5,7 @@ from rest_framework.request import Request
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
-from .serializers import SignUpSerializer
+from .serializers import UserSerializer
 
 @api_view(["POST"])
 def refresh(request: Request):
@@ -40,7 +40,7 @@ def sign_in(request: Request):
 
 @api_view(["POST"])
 def sign_up(request: Request):
-    serializer = SignUpSerializer(data = request.data)
+    serializer = UserSerializer(data = request.data)
     if not serializer.is_valid():
         return Response({"status": "Bad", "messages": serializer.errors}, status=400)
     
@@ -66,15 +66,8 @@ def sign_out(request: Request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get(request: Request):
-    user = request.user
+    serializer = UserSerializer(request.user)
 
-    user = {
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "email": user.email,
-        "is_teacher": user.is_teacher
-    }
-
-    return Response(user, 200)
+    return Response(serializer.data, 200)
 
 # Редактирование пользователя

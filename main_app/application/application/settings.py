@@ -11,12 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv("SECRET_KEY")
+SECRET_KEY = getenv("SECRET_KEY", "secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(getenv("DEBUG", 0)))
 
-ALLOWED_HOSTS = loads(getenv("ALLOWED_HOSTS"))
+ALLOWED_HOSTS = loads(getenv("ALLOWED_HOSTS", '["localhost", "127.0.0.1", "0.0.0.0"]'))
 
 APPEND_SLASH = True
 
@@ -77,8 +77,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=float(getenv("ACCESS_TOKEN_LIFETIME"))),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=float(getenv("REFRESH_TOKEN_LIFETIME"))),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=float(getenv("ACCESS_TOKEN_LIFETIME", 15))),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=float(getenv("REFRESH_TOKEN_LIFETIME", 7))),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     "UPDATE_LAST_LOGIN": True,
@@ -136,6 +136,10 @@ MINIO_PUBLIC_BUCKETS = [
 ]
 
 MINIO_MEDIA_FILES_BUCKET = 'solutions'
+
+CELERY_BROKER_URL = f"redis://{getenv("REDIS_HOST")}:{getenv("REDIS_PORT")}/{getenv("CELERY_BROKER_DATABASE", 0)}"
+
+TS_URL = f"http://{getenv("TS_HOST")}:{getenv("TS_PORT")}/api/run-code/"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

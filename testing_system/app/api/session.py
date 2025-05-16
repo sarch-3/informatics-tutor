@@ -4,10 +4,8 @@ from pydantic import ValidationError
 from models import Data
 from utils import save_file
 from pathlib import Path
-from uuid import uuid4
 from os import getenv
 import shutil
-import docker.errors
 import docker
 
 
@@ -92,20 +90,20 @@ async def run_code(file: UploadFile = File(...), data: str = Form(...)):
             break
 
     successful = False
-    result = None
+    message = f"Message undefined. Unexpexted code {status_code["StatusCode"]}."
     
     if status_code["StatusCode"] == 124:
-        result = f"The runtime is out at {attempt + 1} test."
+        message = f"The runtime is out at {attempt + 1} test."
 
     if status_code["StatusCode"] == 1:
-        result = "Failed to start testing."
+        message = "Failed to start testing."
 
     if status_code["StatusCode"] == 0:
         if successful_flag:
             successful = True
-            result = "Successful"
+            message = "Successful."
         else:
-            result = f"Wrong answer at {attempt + 1} test."
+            message = f"Wrong answer at {attempt + 1} test."
             
 
     client.containers.prune()
@@ -114,4 +112,4 @@ async def run_code(file: UploadFile = File(...), data: str = Form(...)):
     
     shutil.rmtree(file_path.parent)
 
-    return {"successful": successful, "result": result}
+    return {"successful": successful, "message": message}

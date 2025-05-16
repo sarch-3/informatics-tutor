@@ -1,0 +1,17 @@
+FROM python:3.12
+
+WORKDIR /usr/src/app
+
+COPY main_app/requirements.txt requirements.txt
+
+RUN pip install -r requirements.txt
+
+COPY main_app/ .
+
+WORKDIR /usr/src/app/application
+
+ENV HOST=0.0.0.0
+ENV PORT=8000
+ENV WORKERS=4
+
+CMD ["sh", "-c", "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py initialize_buckets && gunicorn application.wsgi --bind ${HOST}:${PORT} --workers ${WORKERS} --log-level info"]

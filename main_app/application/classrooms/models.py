@@ -1,8 +1,8 @@
 from django.db import models
 
 from django_minio_backend import MinioBackend, iso_date_prefix
-from django.core.validators import MinLengthValidator
-from .validators import tests_answers_validator, file_validator
+from django.core.validators import MinLengthValidator, FileExtensionValidator
+from .validators import tests_answers_validator
 from django.utils.timezone import now
 from users.models import CustomUser
 from uuid import uuid4
@@ -20,7 +20,7 @@ class Homework(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False, blank=False)
     title = models.CharField(blank=False)
     active_from = models.DateTimeField(default=now)
-    active_until = models.DateTimeField(default=None, blank=True)
+    active_until = models.DateTimeField(default=None, blank=True, null=True)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="homeworks")
 
     def __str__(self):
@@ -40,9 +40,10 @@ class Task(models.Model):
 
 class Solution(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True, editable=False, blank=False)
+    tested = models.BooleanField(default=False)
     successful = models.BooleanField(default=False)
-    result = models.TextField(default="Not Ready.", blank=False)
-    file = models.FileField(storage=MinioBackend(bucket_name='solutions'), upload_to=iso_date_prefix, validators=(file_validator, ), blank=False, null=False)
+    message = models.TextField(default="Not tested.", blank=False)
+    file = models.FileField(storage=MinioBackend(bucket_name='solutions'), upload_to=iso_date_prefix, validators=(FileExtensionValidator(["py"]), ), blank=False, null=False)
     date = models.DateTimeField(default=now)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="solutions")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="solutions")

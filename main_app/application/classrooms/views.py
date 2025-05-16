@@ -45,7 +45,7 @@ def new_classroom(request: Request):
 
     serializer = ClassroomSerializer(classroom)
 
-    return Response(serializer.data)
+    return Response(serializer.data, status=201)
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -135,7 +135,7 @@ def get_classroom(request: Request, cid: UUID):
     classroom = Classroom.objects.get(id=cid)
 
     homeworks = classroom.homeworks.all().order_by("-active_from")
-    serializer = HomeworkSerializer(homeworks, many=True)
+    serializer = HomeworkSerializer(homeworks, many=True, context={'request': request})
 
     X_Total_Count = homeworks.count()
 

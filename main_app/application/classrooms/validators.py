@@ -13,7 +13,3 @@ def tests_answers_validator(value):
         raise ValidationError('Nested arrays may not be blank.')
     if not all(isinstance(obj2, str) for obj in value for obj2 in obj):
         raise ValidationError('Nested arrays should only consist of strings.')
-    
-def file_validator(value: InMemoryUploadedFile):
-    if value.name.lower().split(".")[-1] != "py":
-        raise ValidationError('Must be in .py format.')

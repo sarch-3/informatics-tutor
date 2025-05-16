@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from application.utils import is_teacher
 
-from classrooms.serializers import HomeworkSerializer, GetClassroomSerializer
+from classrooms.serializers import HomeworkSerializer, AdvancementSerializer
 from classrooms.utils import correct_homework
 from classrooms.models import Homework
 from uuid import UUID
@@ -13,24 +13,11 @@ from uuid import UUID
 @permission_classes([IsAuthenticated])
 @is_teacher(True)
 def new_homework(request: Request):
-    serializer = HomeworkSerializer(data = request.data)
+    serializer = HomeworkSerializer(data = request.data, context = {"request": request})
     if not serializer.is_valid():
         return Response({"status": "Bad", "messages": serializer.errors}, status=400)
-    
-    serializer2 = GetClassroomSerializer(data = request.data)
-
-    if not serializer2.is_valid():
-        return Response({"status": "Bad", "messages": serializer2.errors}, status=400)
-    
-    classroom = serializer2.get()
-
-    if classroom is None:
-        return Response({"status": "Classroom not found"}, status=404)
-    
-    if not serializer2.permitions(request.user, True):
-        return Response({"status": "No permissions"}, status=403)
         
-    serializer.create_homework(classroom.id)
+    serializer.create_homework()
     return Response({"status": "Ok"}, status=201)
 
 @api_view(["GET"])
@@ -38,7 +25,7 @@ def new_homework(request: Request):
 @correct_homework
 def get_homework(request: Request, hid: UUID):
     homework = Homework.objects.get(id=hid)
-    serializer = HomeworkSerializer(homework)
+    serializer = HomeworkSerializer(homework, context={'request': request})
     return Response(serializer.data, status=200)
 
 @api_view(["POST", "DELETE"])
@@ -53,6 +40,19 @@ def edit_homework(request: Request, hid: UUID):
             homework = Homework.objects.get(id=hid)
             homework.delete()
             return Response({"status": "Ok"}, status=200)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+@correct_homework
+@is_teacher(True)
+def advancement(requset: Request, hid: UUID):
+    homework = Homework.objects.get(id = hid)
+    classroom = homework.classroom
+
+    serializer = AdvancementSerializer(classroom.students, many=True, context={"homework": homework})
+
+    return Response(serializer.data, status=200)
+    
 
 # Редактирование дз??? Хз хз
 # Просмотр дз учителем

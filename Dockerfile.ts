@@ -2,9 +2,11 @@ FROM python:3.12
 
 WORKDIR /usr/src/app
 
-COPY testing_system/ .
+COPY testing_system/requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
+
+COPY testing_system/ .
 
 WORKDIR /usr/src/app/app
 
