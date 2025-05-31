@@ -1,0 +1,115 @@
+/* Стили для страницы создания домашней работы */
+.create-homework-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(70,81,229,0.07);
+}
+.create-homework-title {
+  color: #4651e5;
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+.create-homework-block {
+  background: #f7f8fa;
+  border-radius: 10px;
+  padding: 22px 20px 18px 20px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(70,81,229,0.07);
+}
+.create-homework-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4651e5;
+  margin-bottom: 6px;
+  display: block;
+}
+.create-homework-input, .create-homework-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 7px;
+  font-size: 16px;
+  margin-bottom: 14px;
+  background: #fff;
+  transition: border 0.18s;
+}
+.create-homework-input:focus, .create-homework-textarea:focus {
+  border-color: #4651e5;
+  outline: none;
+}
+.create-homework-textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+.create-homework-btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+.create-homework-btn-add {
+  background: #e7eaff;
+  color: #4651e5;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.create-homework-btn-add:hover {
+  background: #4651e5;
+  color: #fff;
+}
+.create-homework-btn-remove {
+  background: #fdeaea;
+  color: #e53935;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.create-homework-btn-remove:hover {
+  background: #e53935;
+  color: #fff;
+}
+.create-homework-btn-submit {
+  background: #4651e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 18px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.create-homework-btn-submit:hover {
+  background: #3540c0;
+}
+.create-homework-error {
+  color: #e53935;
+  background: #fdeaea;
+  border-radius: 6px;
+  padding: 8px 0;
+  font-size: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.create-homework-success {
+  color: #22c55e;
+  background: #e7fbe9;
+  border-radius: 6px;
+  padding: 8px 0;
+  font-size: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+}
