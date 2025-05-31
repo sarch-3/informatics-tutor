@@ -20,7 +20,7 @@ CodeMind позволяет автоматизировать процесс об
 
 ## Демо
 
-<video controls src="assets/demo.mp4" title="Демо"></video>
+https://github.com/user-attachments/assets/15aefe8d-3e41-45e6-a67e-e1e70d821c9d
 
 ## Установка
 
