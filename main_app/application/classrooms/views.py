@@ -30,8 +30,12 @@ def get_classrooms(request: Request):
     classrooms = classrooms[offset:offset+limit]
 
     serializer = ClassroomSerializer(classrooms, many=True)
+
+    response = Response(serializer.data, status=200, headers={"X-Total-Count": X_Total_Count})
     
-    return Response(serializer.data, status=200, headers={"X-Total-Count": X_Total_Count})
+    response["Access-Control-Expose-Headers"] = "X-Total-Count"
+
+    return response
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -134,12 +138,26 @@ def edit_classroom(request: Request, cid: UUID):
 def get_classroom(request: Request, cid: UUID):
     classroom = Classroom.objects.get(id=cid)
 
+    serializer = ClassroomSerializer(classroom)
+
+    return Response(serializer.data, status=200)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+@correct_classroom
+def get_homeworks(request: Request, cid: UUID):
+    classroom = Classroom.objects.get(id=cid)
+
     homeworks = classroom.homeworks.all().order_by("-active_from")
     serializer = HomeworkSerializer(homeworks, many=True, context={'request': request})
 
     X_Total_Count = homeworks.count()
 
-    return Response(serializer.data, status=200, headers={"X-Total-Count": X_Total_Count})
+    response = Response(serializer.data, status=200, headers={"X-Total-Count": X_Total_Count})
+
+    response["Access-Control-Expose-Headers"] = "X-Total-Count"
+
+    return response
 
 
 

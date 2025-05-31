@@ -18,6 +18,8 @@ DEBUG = bool(int(getenv("DEBUG", 0)))
 
 ALLOWED_HOSTS = loads(getenv("ALLOWED_HOSTS", '["localhost", "127.0.0.1", "0.0.0.0"]'))
 
+CORS_ALLOWED_ORIGINS = loads(getenv("CORS_ALLOWED_ORIGINS", '["http://localhost:5173", "http://127.0.0.1:5173", "http://0.0.0.0:5173"]'))
+
 APPEND_SLASH = True
 
 # Application definition
@@ -34,6 +36,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "django_minio_backend",
+    "corsheaders",
     # "django_minio_backend.apps.DjangoMinioBackendConfig",
 
     "ping",
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'application.urls'

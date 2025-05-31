@@ -80,7 +80,7 @@ class TaskSerializer(serializers.ModelSerializer):
         solutions = Solution.objects.filter(user = user, task = obj)
         if not solutions:
             return "unsolved"
-        if not solutions.filter(tested = True):
+        if solutions.filter(tested = False):
             return "pending"
         if not solutions.filter(successful = True):
             return "wrong"
@@ -239,7 +239,7 @@ class AdvancementSerializer(serializers.ModelSerializer):
             if not solutions:
                 status = "unsolved"
                 last_solution = {}
-            elif not solutions.filter(tested = True):
+            elif solutions.filter(tested = False):
                 status = "pending"
                 last_solution = SolutionSerializer(solutions[0]).data
             elif not solutions.filter(successful = True):

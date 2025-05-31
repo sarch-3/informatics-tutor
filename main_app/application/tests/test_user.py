@@ -51,7 +51,7 @@ class TestUser(TestCase):
         refresh = response.json()["refresh"]
 
         response = self.client.post('/api/user/refresh/', data={"refresh": refresh})
-        self.assertEqual(response.status_code, 205)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("access", response.json())
 
     def test_sign_out(self):
@@ -68,11 +68,11 @@ class TestUser(TestCase):
         refresh = response.json()["refresh"]
 
         response = self.client.post('/api/user/refresh/', data={"refresh": refresh})
-        self.assertEqual(response.status_code, 205)
+        self.assertEqual(response.status_code, 200)
         self.assertIn("access", response.json())
 
         response = self.client.post('/api/user/sign-out/', data={"refresh": refresh})
-        self.assertEqual(response.status_code, 205)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/api/user/refresh/', data={"refresh": refresh})
         self.assertEqual(response.status_code, 400)
@@ -93,7 +93,9 @@ class TestUser(TestCase):
         response = self.client.get('/api/user/get/', headers={"Authorization": f"Bearer {access}"})
         self.assertEqual(response.status_code, 200)
         data.pop("password")
-        self.assertEqual(response.json(), data)
+        response_json = response.json()
+        response_json.pop("id")
+        self.assertEqual(response_json, data)
     
     def test_bad_password(self):
         data = {

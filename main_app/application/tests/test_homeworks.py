@@ -55,22 +55,22 @@ class TestHomework(TestCase):
             ]
         }
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.t_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.t_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [])
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.s_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.s_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [])
 
         response = self.client.post("/api/homeworks/create/", headers={"Authorization": f"Bearer {self.t_token}"}, data=data, content_type="application/json")
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.t_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.t_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.s_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.s_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
 
@@ -112,7 +112,7 @@ class TestHomework(TestCase):
         response = self.client.post("/api/homeworks/create/", headers={"Authorization": f"Bearer {self.t_token}"}, data=data, content_type="application/json")
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.t_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.t_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
         hid = response.json()[0]["id"]
@@ -120,7 +120,7 @@ class TestHomework(TestCase):
         response = self.client.delete(f"/api/homeworks/{hid}/edit/", headers={"Authorization": f"Bearer {self.t_token}"}, content_type="application/json")
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(f"/api/classrooms/{self.cid}/", headers={"Authorization": f"Bearer {self.t_token}"})
+        response = self.client.get(f"/api/classrooms/{self.cid}/homeworks/", headers={"Authorization": f"Bearer {self.t_token}"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 0)
 

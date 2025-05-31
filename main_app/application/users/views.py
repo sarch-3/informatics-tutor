@@ -15,7 +15,7 @@ def refresh(request: Request):
 
     try:
         token = RefreshToken(token)
-        return Response({"access": str(token.access_token)}, status=205)
+        return Response({"access": str(token.access_token)}, status=200)
     except Exception as e:
         return Response({"status": "Bad", "messages": {"refresh": ["Invalid token."]}}, status=400)
 
@@ -59,7 +59,7 @@ def sign_out(request: Request):
     try:
         token = RefreshToken(token)
         token.blacklist()
-        return Response({"status": "Ok"}, status=205)
+        return Response({"status": "Ok"}, status=200)
     except Exception as e:
         return Response({"status": "Bad", "messages": {"refresh": ["Invalid token."]}}, status=400)
 

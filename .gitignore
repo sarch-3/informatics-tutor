@@ -4,3 +4,6 @@ __pycache__
 .pytest_cache
 TASKS.md
 00*_*.py
+minio-data
+postgres-data
+redis-data
